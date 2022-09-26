@@ -1,0 +1,79 @@
+<div class="products-container">
+  <div class="row">
+    <div class="panel panel-primary col-md-4">
+      <h2>Add Product</h2>
+      <div class="panel-body">
+        <form>
+          <div class="form-group">
+            <label class="col-md-4">Product Name</label>
+            <input type="text" class="form-control" #productName />
+          </div>
+          <div class="form-group">
+            <label class="col-md-4">Product Price</label>
+            <input type="number" class="form-control" #productPrice />
+          </div>
+          <div class="form-group">
+            <button type="button" (click)="addProduct(productName.value, productPrice.value)" class="btn btn-primary add-btn">Add Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-primary col-md-6">
+      <h2>List of Products</h2>
+      <table class="table table-hover col-md-6">
+        <thead>
+          <tr>
+            <td>Product Name</td>
+            <td>Product Price</td>
+            <td>Edit</td>
+            <td>Delete</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products | async">
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+            <td><button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" class="btn btn-warning"
+                (click)="currentProduct = product">Edit</button></td>
+            <td><button (click)="deleteProduct(product.id)" type="button" class="btn btn-danger">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <form>
+                <div class="form-group">
+                  <label class="col-md-4">Product Name</label>
+                  <input type="text" [value]="currentProduct?.name" class="form-control" #editProductName />
+                </div>
+                <div class="form-group">
+                  <label class="col-md-4">Product Price</label>
+                  <input type="text" [value]="currentProduct?.price" class="form-control" #editProductPrice />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+            (click)="editProduct({name: editProductName.value, price: +editProductPrice.value, id: currentProduct?.id})">Save
+            changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
