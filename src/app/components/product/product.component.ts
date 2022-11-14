@@ -1,7 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { addProduct, deleteProduct, editProduct, Product } from 'src/app/store/actions/product.actions';
+import { addProduct, deleteProduct, editProduct, Product, ProductActions } from 'src/app/store/actions/product.actions';
 import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
@@ -9,7 +9,7 @@ import { AppState } from 'src/app/store/state/app.state';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.sass']
 })
-export class ProductComponent {
+export class ProductComponent implements OnInit {
   products: Observable<Product[]>;
   currentProduct!: any;
 
@@ -18,6 +18,10 @@ export class ProductComponent {
 
   constructor(private store: Store<AppState>) {
     this.products = this.store.select(state => state.products);
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch({ type: ProductActions.LOAD_PRODUCTS });
   }
 
   addProduct(name: string, price: string): void {

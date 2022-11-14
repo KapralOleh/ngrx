@@ -1,11 +1,12 @@
 import { createReducer, on } from "@ngrx/store";
-import { addProduct, deleteProduct, editProduct, getProducts, Product } from "../actions/product.actions";
+import { addProduct, deleteProduct, editProduct, getProducts, loadProductsSuccess, Product } from "../actions/product.actions";
 
 export const initialState: Product[] = [];
 
 export const productsReducer = createReducer(
   initialState,
   on(addProduct, (state, { product }) => state.concat([product])),
+  on(loadProductsSuccess, (state, { products }) => state.concat(products)),
   on(getProducts, (state) => ({ ...state })),
   on(editProduct, (state, { product }) => {
     return state.map(element => {
